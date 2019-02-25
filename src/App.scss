@@ -1,0 +1,85 @@
+@mixin vertical-align {
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    
+  }
+  
+  html {
+    font-size: 62.5%;
+  }
+  
+  body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+  }
+  
+  .container {
+    display: grid;
+    grid-template-rows: 10rem 50rem;
+    height: 60rem;
+    width: 40rem;
+    
+  
+    .display {
+      background:  #97baec;
+      color: white;
+      font-size: 6rem;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+
+      .display-text {
+        padding-right: 1rem;
+      }
+
+    }
+  
+    .buttons {
+      display: grid;
+      grid-template-rows: repeat(5, 10rem);
+      text-align: center;
+  
+      .button-row {
+        display: grid;
+        grid-template-columns: repeat(4, 10rem);
+      }
+  
+      .button-row-5#specificity-hack {
+        grid-template-columns: 20rem 10rem 10rem;
+      }
+  
+      .button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid white;
+        background: #bbdffa;
+        transition: all 0.4s;
+        &:hover {
+          cursor: pointer;
+          color: white;
+          background-color: black;
+          transform: translateY(-2px);
+        }
+        &:active {
+          transform: translateY(2px);
+        }
+      }
+  
+      .button-side {
+        background: #445bc1;
+      }
+    }
+  }
+  
