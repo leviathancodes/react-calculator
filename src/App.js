@@ -71,6 +71,10 @@ class App extends Component {
     let decimal = e.target.innerHTML;
     let lastInput = this.state.lastInput;
 
+    if (val == "0") {
+      return this.setState({displayValue: "0."})
+    }
+
     if (val[val.length - 1] == decimal) {
       return
     }
