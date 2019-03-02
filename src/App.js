@@ -30,7 +30,7 @@ class App extends Component {
     let val = this.state.displayValue;
     let num = e.target.innerHTML;
     let lastInput = this.state.lastInput;
-    let calculationState = this.state.calculation;
+    let calculationState = this.state.calculation; 
 
     if (lastInput == "init" ) {
       val = num
@@ -38,7 +38,7 @@ class App extends Component {
     }
     
     if (val.length >= 10) {
-      return 
+      return this.setState({displayValue: "ERR", lastInput: num})
     }
 
     if (val == "ERR") {
@@ -162,6 +162,9 @@ class App extends Component {
     let solution = (eval(calculationState.join(" ")));
     if (String(solution).length >= 10) {
       solution = solution.toFixed(6);
+      if (solution.length >= 10) {
+        return this.setState({displayValue: "ERR", calculation: ["0"], lastInput: "="})
+      }
     }
     this.setState({displayValue: solution, calculation: ["0"], lastInput: "="})
   }
