@@ -15,8 +15,7 @@ class App extends Component {
     this.state = {
       displayValue: 0,
       calculation: ["0"],
-      lastInput: "init",
-      evaluated: false
+      lastInput: "init"
     }
     this.handleDigits = this.handleDigits.bind(this);
     this.handleDecimal = this.handleDecimal.bind(this);
@@ -83,11 +82,8 @@ class App extends Component {
       return
     }
 
-  
     val += decimal
-    this.setState({displayValue: val, lastInput: decimal})
-
-    
+    this.setState({displayValue: val, lastInput: decimal}) 
   }
 
   handleClear(e) {
@@ -119,7 +115,6 @@ class App extends Component {
   }
 
   handlePosiNeg(e) {
-
     let val = this.state.displayValue;
     if (val != 0 && val != "." && val != "ERR") {
       this.setState({displayValue: "-" + val})
@@ -135,8 +130,6 @@ class App extends Component {
     let operator = e.target.innerHTML;
     let calculationState = this.state.calculation.slice();
     let lastInput = e.target.innerHTML;
-    
-
 
     if (operator == "X") {
       operator = "*"
