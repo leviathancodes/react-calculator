@@ -66,9 +66,6 @@ class App extends Component {
       lastInput: num})
     }
 
-
-
-
   handleDecimal(e) {
     let val = this.state.displayValue;
     let decimal = e.target.innerHTML;
@@ -144,14 +141,12 @@ class App extends Component {
     this.state.lastInput === "÷") {
     calculationState.splice(calculationState.length - 1, 1)
     calculationState.push(operator)
-    this.setState({calculation: calculationState, lastInput: lastInput})
-    return console.log(calculationState, lastInput, this.state.lastInput)
+    return this.setState({calculation: calculationState, lastInput: lastInput})
     }
 
     calculationState.push(val)
     calculationState.push(operator)
 
-    console.log(calculationState, lastInput, this.state.lastInput)
     this.setState({calculation: calculationState, lastInput: lastInput})
   }
 
@@ -165,7 +160,6 @@ class App extends Component {
       solution = solution.toFixed(6);
     }
     this.setState({displayValue: solution, calculation: ["0"], lastInput: "="})
-    console.log(this.state.calculation)
   }
 
 
