@@ -1,21 +1,19 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.scss';
 import Display from './components/Display';
 import Buttons from './components/Buttons';
 
-
-
-
 class App extends Component {
 
   constructor(props) {
+    
     super(props);
 
     this.state = {
       displayValue: 0,
       calculation: ["0"],
-      lastInput: "init"
+      lastInput: "init",
+      clear: "AC"
     }
     this.handleDigits = this.handleDigits.bind(this);
     this.handleDecimal = this.handleDecimal.bind(this);
@@ -23,18 +21,19 @@ class App extends Component {
     this.handlePercentage = this.handlePercentage.bind(this);
     this.handlePosiNeg = this.handlePosiNeg.bind(this);
     this.handleCalculation = this.handleCalculation.bind(this);
-    this.handleEquals = this.handleEquals.bind(this)
+    this.handleEquals = this.handleEquals.bind(this);
+    this.handleKey = this.handleKey.bind(this);
+    this.testFunction = this.handleKey.bind(this);
   }
 
   handleDigits(e) {
     let val = this.state.displayValue;
     let num = e.target.innerHTML;
     let lastInput = this.state.lastInput;
-    let calculationState = this.state.calculation; 
 
-    if (lastInput == "init" ) {
+    if (lastInput == "init") {
       val = num
-      return this.setState({displayValue: num, lastInput: num})
+      return this.setState({displayValue: num, lastInput: num, clear: "C"})
     }
     
     if (val.length >= 10) {
@@ -42,7 +41,7 @@ class App extends Component {
     }
 
     if (val == "ERR") {
-      return this.setState({displayValue: 0})
+      return this.setState({displayValue: 0, lastInput: "init", clear: "AC"})
     }
     if (val == "0" && num == "0") {
       return
@@ -64,12 +63,11 @@ class App extends Component {
     let newVal = val + num
     this.setState({displayValue: newVal, 
       lastInput: num})
-    }
+  }
 
   handleDecimal(e) {
     let val = this.state.displayValue;
     let decimal = e.target.innerHTML;
-    let lastInput = this.state.lastInput;
 
     if (val == "0") {
       return this.setState({displayValue: "0."})
@@ -88,8 +86,7 @@ class App extends Component {
   }
 
   handleClear(e) {
-    this.setState({displayValue: 0})
-    this.setState({calculation: ["0"]})
+    this.setState({displayValue: 0, calculation: ["0"], clear: "AC", lastInput: "init"})
   }
 
   handlePercentage(e) {
@@ -169,7 +166,13 @@ class App extends Component {
     this.setState({displayValue: solution, calculation: ["0"], lastInput: "="})
   }
 
+  handleKey(e) {
+    console.log(`Your key: ${e.key}`)
+  }
 
+  componentDidMount() {
+    window.addEventListener("keydown", this.handleKey);
+    }
 
   render() {
     return (
@@ -182,7 +185,8 @@ class App extends Component {
         posiNeg={this.handlePosiNeg}
         addition={this.handlePlus}
         calculation={this.handleCalculation}
-        equals={this.handleEquals}/>
+        equals={this.handleEquals}
+        clearState={this.state.clear}/>
       </div>
     );
   }

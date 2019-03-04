@@ -5,7 +5,7 @@ const Buttons = props => {
     return (
 <div className="buttons">
     <div className="button-row button-row-1">
-   <div className="button" onClick={props.clear} id="clear">C</div>
+   <div className="button" onClick={props.clear} id="clear">{props.clearState}</div>
       <div className="button" onClick={props.posiNeg}>+/-</div>
       <div className="button" onClick={props.percentage}>%</div>
       <div className="button button-side" onClick={props.calculation}id="divide">÷</div>   
