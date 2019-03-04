@@ -31,6 +31,11 @@ class App extends Component {
     let num = e.target.innerHTML;
     let lastInput = this.state.lastInput;
 
+    if (val === "0.") {
+      let newVal = val + num
+      this.setState({displayValue: newVal, lastInput: num})
+    }
+
     if (lastInput == "init") {
       val = num
       return this.setState({displayValue: num, lastInput: num, clear: "C"})
@@ -70,7 +75,8 @@ class App extends Component {
     let decimal = e.target.innerHTML;
 
     if (val == "0") {
-      return this.setState({displayValue: "0."})
+      val += decimal
+      return this.setState({displayValue: "0.", lastInput: decimal, clear: "C"})
     }
 
     if (val[val.length - 1] == decimal) {

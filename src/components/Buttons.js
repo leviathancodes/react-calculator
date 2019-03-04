@@ -24,9 +24,9 @@ const Buttons = props => {
       
     </div>
     <div className="button-row button-row-4">
-      <div className="button" onClick={props.clickNum} id="three">3</div>
+      <div className="button" onClick={props.clickNum} id="three">1</div>
       <div className="button" onClick={props.clickNum} id="two">2</div>
-      <div className="button" onClick={props.clickNum} id="one">1</div>
+      <div className="button" onClick={props.clickNum} id="one">3</div>
       <div className="button button-side" onClick={props.calculation}id="add">+</div>
     </div>
     <div className="button-row button-row-5">
