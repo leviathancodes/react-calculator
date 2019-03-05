@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.scss';
 import Display from './components/Display';
 import Buttons from './components/Buttons';
+import * as math from 'mathjs'
 
 class App extends Component {
 
@@ -79,6 +80,10 @@ class App extends Component {
       return this.setState({displayValue: "0.", lastInput: decimal, clear: "C"})
     }
 
+    if (val == "ERR") {
+      return this.setState({displayValue: 0, lastInput: "init", clear: "AC"})
+    }
+
     if (val[val.length - 1] == decimal) {
       return
     }
@@ -102,7 +107,7 @@ class App extends Component {
     percentage = percentage.toString();
     
     if (val == "ERR") {
-      return this.setState({displayValue: 0})
+      return this.setState({displayValue: 0, lastInput: "init", clear: "AC"})
     }
 
     console.log(percentage);
@@ -119,14 +124,23 @@ class App extends Component {
   }
 
   handlePosiNeg(e) {
-    let val = this.state.displayValue;
+    const val = this.state.displayValue;
+    let lastInput = this.state.lastInput;
+
+    console.log(val[0])
+
+    if (val == "ERR") {
+      return this.setState({displayValue: 0, lastInput: "init", clear: "AC"})
+    }
+
+    if (Math.sign(Number(val)) == -1) {
+      return this.setState({displayValue: Math.abs(Number(val))})
+    }
+
     if (val != 0 && val != "." && val != "ERR") {
-      this.setState({displayValue: "-" + val})
+      this.setState({displayValue: "-" + val, lastInput: "NegSign"})
     }
-    if (val[0] == "-") {
-      val = val.replace("-", "");
-      this.setState({displayValue: val})
-    }
+
   }
 
   handleCalculation(e) {
@@ -140,6 +154,10 @@ class App extends Component {
     } 
     if (operator == "÷") {
       operator = "/"
+    }
+
+    if (val == "ERR") {
+      return this.setState({displayValue: 0, lastInput: "init", clear: "AC"})
     }
 
     if (this.state.lastInput === "X" || 
@@ -159,17 +177,29 @@ class App extends Component {
 
   handleEquals(e) {
     let val = this.state.displayValue;
+
+    if (val == "ERR") {
+      return this.setState({displayValue: 0, lastInput: "init", clear: "AC"})
+    }
+
     let calculationState = this.state.calculation.slice();
     calculationState.shift()
     calculationState.push(String(val))
-    let solution = (eval(calculationState.join(" ")));
+    let solution = (math.eval(calculationState.join(" ")));
+    
     if (String(solution).length >= 10) {
       solution = solution.toFixed(6);
+
+      if (solution == 0.300000) {
+        return this.setState({displayValue: "0.3", calculation: ["0"], lastInput: "="}) 
+      }
+
       if (solution.length >= 10) {
         return this.setState({displayValue: "ERR", calculation: ["0"], lastInput: "="})
       }
     }
-    this.setState({displayValue: solution, calculation: ["0"], lastInput: "="})
+    
+    return this.setState({displayValue: solution, calculation: ["0"], lastInput: "="})
   }
 
   handleKey(e) {
