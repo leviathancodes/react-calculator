@@ -1,4 +1,5 @@
 import React from 'react';
+import {ReactComponent as BackspaceIcon} from '../backspace_icon.svg'
 
 const Buttons = props => {
 
@@ -7,7 +8,7 @@ const Buttons = props => {
     <div className="button-row button-row-1">
    <div className="button" onClick={props.clear} id="clear">{props.clearState}</div>
       <div className="button" onClick={props.posiNeg}>+/-</div>
-      <div className="button" onClick={props.percentage}>%</div>
+      <div className="button" onClick={props.backspace} id="backspace"><BackspaceIcon /></div>
       <div className="button button-side" onClick={props.calculation}id="divide">÷</div>   
     </div>
     <div className="button-row button-row-2">

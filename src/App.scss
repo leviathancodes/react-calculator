@@ -68,15 +68,25 @@
         background: #bbdffa;
         user-select: none;
         transition: all 0.2s;
+        
         &:hover {
           cursor: pointer;
           color: white;
-          background-color: red;
+          background-color: black;
           transform: translateY(-2px);
+          .backspace {
+            fill: white;
+          }
         }
         &:active {
           transform: translateY(2px);
         }
+
+        .backspace {
+          width: 4rem;
+        
+        }
+    
       }
   
       .button-side {

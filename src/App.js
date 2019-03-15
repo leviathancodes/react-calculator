@@ -25,11 +25,14 @@ class App extends Component {
     this.handleEquals = this.handleEquals.bind(this);
     this.handleKey = this.handleKey.bind(this);
     this.testFunction = this.handleKey.bind(this);
+    this.handleBackspace = this.handleBackspace.bind(this);
   }
 
-  handleDigits(e) {
+  handleDigits(e, key) {
     let val = this.state.displayValue;
-    let num = e.target.innerHTML;
+    let num;
+    e ? num = e.target.innerHTML : num = key
+ 
     let lastInput = this.state.lastInput;
 
     if (val === "0.") {
@@ -59,10 +62,10 @@ class App extends Component {
     }
 
     if ( 
-      (lastInput == "X" ||
+      (lastInput == "*" ||
        lastInput == "+" ||
        lastInput == "-" ||
-       lastInput == "÷")) {
+       lastInput == "/")) {
         return this.setState({displayValue: num, lastInput: num})
       }
 
@@ -71,9 +74,11 @@ class App extends Component {
       lastInput: num})
   }
 
-  handleDecimal(e) {
+  handleDecimal(e, key) {
     let val = this.state.displayValue;
-    let decimal = e.target.innerHTML;
+    let decimal;
+
+    e ? decimal = e.target.innerHTML : decimal = key
 
     if (val == "0") {
       val += decimal
@@ -125,7 +130,6 @@ class App extends Component {
 
   handlePosiNeg(e) {
     const val = this.state.displayValue;
-    let lastInput = this.state.lastInput;
 
     console.log(val[0])
 
@@ -143,11 +147,12 @@ class App extends Component {
 
   }
 
-  handleCalculation(e) {
+  handleCalculation(e, key) {
+    console.log(this.state.lastInput)
     let val = this.state.displayValue;
-    let operator = e.target.innerHTML;
-    let calculationState = this.state.calculation.slice();
-    let lastInput = e.target.innerHTML;
+    let operator;
+
+    e ? operator = e.target.innerHTML : operator = key
 
     if (operator == "X") {
       operator = "*"
@@ -156,26 +161,37 @@ class App extends Component {
       operator = "/"
     }
 
+    let calculationState = this.state.calculation.slice();
+
+    let lastInput = operator;
+
+
     if (val == "ERR") {
       return this.setState({displayValue: 0, lastInput: "init", clear: "AC"})
     }
 
-    if (this.state.lastInput === "X" || 
+
+
+
+    if (this.state.lastInput === "*" || 
     this.state.lastInput === "+" ||
     this.state.lastInput === "-" ||
-    this.state.lastInput === "÷") {
+    this.state.lastInput === "/"
+    ) 
+    {
     calculationState.splice(calculationState.length - 1, 1)
-    calculationState.push(operator)
+    calculationState.push(lastInput)
     return this.setState({calculation: calculationState, lastInput: lastInput})
     }
 
     calculationState.push(val)
-    calculationState.push(operator)
+    calculationState.push(lastInput)
 
     this.setState({calculation: calculationState, lastInput: lastInput})
   }
 
   handleEquals(e) {
+    console.log(this.state.lastInput)
     let val = this.state.displayValue;
 
     if (val == "ERR") {
@@ -199,12 +215,55 @@ class App extends Component {
       }
     }
     
-    return this.setState({displayValue: solution, calculation: ["0"], lastInput: "="})
+    return this.setState({displayValue: String(solution), calculation: ["0"], lastInput: "="})
+  }
+
+  handleBackspace(e) {
+    let val = this.state.displayValue;
+
+    if (val == "0") {
+      return
+    }
+    console.log("backspace was pressed")
+    if (val.length == 1 || val == "ERR") {
+      return this.setState({displayValue: 0})
+    }
+    val = val.slice(0, val.length - 1)
+    this.setState({displayValue: val})
+    
   }
 
   handleKey(e) {
-    console.log(`Your key: ${e.key}`)
+    const clickedKey = e.key
+    console.log(`Your key: ${clickedKey}`, typeof clickedKey)
+
+    if (clickedKey == "Enter") {
+      this.handleEquals()
+    }
+    if (clickedKey == "Backspace") {
+      this.handleBackspace()
+    }
+
+    if (Number(clickedKey) || clickedKey == "0") {
+      this.handleDigits(null, clickedKey)
+    }
+
+    if (clickedKey == "c" || clickedKey == "C" || clickedKey == "Escape") {
+      this.handleClear()
+    }
+
+    if (clickedKey == "+" || clickedKey == "-" || clickedKey == "/" || clickedKey == "x" || clickedKey == "X" || clickedKey == "*") {
+      if (clickedKey == "x" || clickedKey == "X") {
+        return this.handleCalculation(null, "*")
+      } 
+      this.handleCalculation(null, clickedKey)
+    }
+
+    if (clickedKey == ".") {
+      this.handleDecimal(null, clickedKey)
+    }
   }
+
 
   componentDidMount() {
     window.addEventListener("keydown", this.handleKey);
@@ -222,7 +281,8 @@ class App extends Component {
         addition={this.handlePlus}
         calculation={this.handleCalculation}
         equals={this.handleEquals}
-        clearState={this.state.clear}/>
+        clearState={this.state.clear}
+        backspace={this.handleBackspace}/>
       </div>
     );
   }
