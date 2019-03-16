@@ -1,9 +1,22 @@
 import React from 'react';
 
 let Pagination = props => {
-    return <div class="pagination">
-    <div class="page-1"/>
-    <div class="page-2"/>
-    </div>
+    if (props.page == 1 ) {
+        return (
+            <div class="container-pages">
+            <span class="circle" 
+            style={{backgroundColor: "#bbb"}} ></span>
+            <span class="circle" onClick={props.changePage}></span>
+          </div>
+    )
+    } else {
+        return (
+            <div class="container-pages">
+            <span class="circle" onClick={props.changePage}></span>
+            <span class="circle" style={{backgroundColor: "#bbb"}} ></span>
+          </div>
+    )    }
 
 }
+
+export default Pagination

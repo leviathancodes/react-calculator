@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.scss';
 import Display from './components/Display';
 import Buttons from './components/Buttons';
+import Pagination from './components/Pagination'
 import * as math from 'mathjs'
 
 class App extends Component {
@@ -14,7 +15,8 @@ class App extends Component {
       displayValue: 0,
       calculation: ["0"],
       lastInput: "init",
-      clear: "AC"
+      clear: "AC",
+      page: 1,
     }
     this.handleDigits = this.handleDigits.bind(this);
     this.handleDecimal = this.handleDecimal.bind(this);
@@ -26,6 +28,8 @@ class App extends Component {
     this.handleKey = this.handleKey.bind(this);
     this.testFunction = this.handleKey.bind(this);
     this.handleBackspace = this.handleBackspace.bind(this);
+    this.changePage = this.changePage.bind(this)
+    this.mathFunction = this.handleMathFunction.bind(this)
   }
 
   handleDigits(e, key) {
@@ -45,11 +49,11 @@ class App extends Component {
       return this.setState({displayValue: num, lastInput: num, clear: "C"})
     }
     
-    if (val.length >= 10) {
+    if (val.length >= 16) {
       return this.setState({displayValue: "ERR", lastInput: num})
     }
 
-    if (val == "ERR") {
+    if (val == "ERR" || val == "NaN" || val == "Infinity") {
       return this.setState({displayValue: 0, lastInput: "init", clear: "AC"})
     }
     if (val == "0" && num == "0") {
@@ -73,6 +77,52 @@ class App extends Component {
     this.setState({displayValue: newVal, 
       lastInput: num})
   }
+
+  handleMathFunction(e) {
+    const currentValue = Number(this.state.displayValue);
+    const mathFunction = e.target.id;
+    const random = Number(math.random(0,1).toFixed(8));
+    const pi = 3.14159265359;
+    console.log(mathFunction);
+
+    switch (mathFunction) {
+      case "pi":
+      this.setState({displayValue: pi, lastInput: mathFunction})
+      break;
+      case "random":
+      this.setState({displayValue: random, lastInput: mathFunction})
+      break;
+      case "percentage":
+      this.handlePercentage()
+      break;
+      case "sine":
+      this.setState({displayValue: math.sin(currentValue).toFixed(8), lastInput: mathFunction})
+      break;
+      case "cosine":
+      this.setState({displayValue: math.cos(currentValue).toFixed(8), lastInput: mathFunction})
+      break;
+      case "tangent":
+      this.setState({displayValue: math.tan(currentValue).toFixed(8), lastInput: mathFunction})
+      break;
+      case "pow2":
+      this.setState({displayValue: math.pow(currentValue, 2), lastInput: mathFunction})
+      break;
+      case "pow3":
+      this.setState({displayValue: math.pow(currentValue, 3), lastInput: mathFunction})
+      break;
+      case "sqrt":
+      this.setState({displayValue: math.sqrt(currentValue).toFixed(8), lastInput: mathFunction})
+      break;
+      case "sqrt3":
+      this.setState({displayValue: math.nthRoot(currentValue, 3,).toFixed(8), lastInput: mathFunction})
+      break;
+      case "sqrt4":
+      this.setState({displayValue: math.nthRoot(currentValue, 4).toFixed(8), lastInput: mathFunction})
+      break;
+      default: 
+      console.log("yo")
+    }
+   }
 
   handleDecimal(e, key) {
     let val = this.state.displayValue;
@@ -203,14 +253,14 @@ class App extends Component {
     calculationState.push(String(val))
     let solution = (math.eval(calculationState.join(" ")));
     
-    if (String(solution).length >= 10) {
+    if (String(solution).length >= 16) {
       solution = solution.toFixed(6);
 
       if (solution == 0.300000) {
         return this.setState({displayValue: "0.3", calculation: ["0"], lastInput: "="}) 
       }
 
-      if (solution.length >= 10) {
+      if (solution.length > 16) {
         return this.setState({displayValue: "ERR", calculation: ["0"], lastInput: "="})
       }
     }
@@ -219,7 +269,7 @@ class App extends Component {
   }
 
   handleBackspace(e) {
-    let val = this.state.displayValue;
+    let val = String(this.state.displayValue);
 
     if (val == "0") {
       return
@@ -262,8 +312,23 @@ class App extends Component {
     if (clickedKey == ".") {
       this.handleDecimal(null, clickedKey)
     }
+
+    if (clickedKey == "ArrowRight") {
+      return this.setState({page: 2})
+    }
+
+    if (clickedKey == "ArrowLeft") {
+      return this.setState({page: 1})
+    }
+
   }
 
+  changePage(e) {
+    if (this.state.page == 1) {
+      return this.setState({page: 2})
+    }
+    return this.setState({page:1})
+  }
 
   componentDidMount() {
     window.addEventListener("keydown", this.handleKey);
@@ -282,7 +347,10 @@ class App extends Component {
         calculation={this.handleCalculation}
         equals={this.handleEquals}
         clearState={this.state.clear}
-        backspace={this.handleBackspace}/>
+        backspace={this.handleBackspace}
+        page={this.state.page}
+        func={this.mathFunction}/>
+        <Pagination page={this.state.page} changePage={this.changePage}/>
       </div>
     );
   }

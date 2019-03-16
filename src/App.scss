@@ -22,76 +22,109 @@
     justify-content: center;
     align-items: center;
     font-size: 3rem;
-  }
-  
-  .container {
-    display: grid;
-    grid-template-rows: 10rem 50rem;
-    height: 60rem;
-    width: 40rem;
-    
-  
-    .display {
-      background:  #97baec;
-      color: white;
-      font-size: 6rem;
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
 
-      .display-text {
-        padding-right: 1rem;
-      }
-
-    }
-  
-    .buttons {
+    .container {
       display: grid;
-      grid-template-rows: repeat(5, 10rem);
+      grid-template-rows: 10rem 50rem;
+      height: 60rem;
+      width: 40rem;
       text-align: center;
-
-  
-      .button-row {
-        display: grid;
-        grid-template-columns: repeat(4, 10rem);
-      }
-  
-      .button-row-5 {
-        grid-template-columns: 20rem 10rem 10rem;
-      }
-  
-      .button {
+    
+      .display {
+        background:  #97baec;
+        color: white;
+        font-size: 4rem;
         display: flex;
-        justify-content: center;
         align-items: center;
-        border: 1px solid white;
-        background: #bbdffa;
-        user-select: none;
-        transition: all 0.2s;
+        justify-content: flex-end;
+        overflow: hidden;
+  
+        .display-text {
+          padding-right: 1rem;
+        }
+  
+      }
+    
+      .buttons {
+        display: grid;
+        grid-template-rows: repeat(5, 10rem);
+        text-align: center;
+  
+    
+        .button-row {
+          display: grid;
+          grid-template-columns: repeat(4, 10rem);
+        }
+    
+        .button-row-5 {
+          grid-template-columns: 20rem 10rem 10rem;
+        }
+    
+        .button {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border: 1px solid white;
+          background: #bbdffa;
+          user-select: none;
+          transition: all 0.2s;
+          
+          &:hover {
+            cursor: pointer;
+            color: white;
+            background-color: black;
+            transform: translateY(-2px);
+            .backspace {
+              fill: white;
+            }
+          }
+          &:active {
+            transform: translateY(2px);
+          }
+  
+          .backspace {
+            width: 4rem;
+          
+          }
+      
+        }
+    
+        .button-side {
+          background: #445bc1;
+        }
+      }
+    }
+    
+
+
+    .container-pages {
+      width: 12rem;
+      display: grid;
+      grid-template-columns: repeat(2, 2rem);
+      grid-gap: 0.9rem;
+      
+      .circle {
+    height: 1.2rem;
+    width: 1.2rem;
+    border-radius: 50%;
+    border: 0.2rem solid #bbb;
+    margin-top: 1rem;
+    @include vertical-align();
+    transition: all 0.4s;
+
+
         
         &:hover {
+          background-color: #bbb;
           cursor: pointer;
-          color: white;
-          background-color: black;
-          transform: translateY(-2px);
-          .backspace {
-            fill: white;
-          }
         }
-        &:active {
-          transform: translateY(2px);
-        }
-
-        .backspace {
-          width: 4rem;
         
+        &:focus {
+          background-color: #bbb
         }
-    
-      }
-  
-      .button-side {
-        background: #445bc1;
+        
       }
     }
+
   }
   
